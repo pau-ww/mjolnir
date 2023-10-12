@@ -111,18 +111,14 @@ export class ReportPoller {
          */
         if (response.next_token !== undefined) {
             this.from = response.next_token;
-            try {
-                await this.mjolnir.client.setAccountData(REPORT_POLL_EVENT_TYPE, { from: response.next_token });
-            } catch (ex) {
-                await this.mjolnir.managementRoomOutput.logMessage(LogLevel.ERROR, "getAbuseReports", `failed to update progress: ${ex}`);
-            }
         } else {
             this.from = response.event_reports.length;
-            try {
-                await this.mjolnir.client.setAccountData(REPORT_POLL_EVENT_TYPE, { from: response.next_token });
-            } catch (ex) {
-                await this.mjolnir.managementRoomOutput.logMessage(LogLevel.ERROR, "getAbuseReports", `failed to update progress: ${ex}`);
-            }
+        }
+
+        try {
+            await this.mjolnir.client.setAccountData(REPORT_POLL_EVENT_TYPE, { from: this.from });
+        } catch (ex) {
+            await this.mjolnir.managementRoomOutput.logMessage(LogLevel.ERROR, "getAbuseReports", `failed to update progress: ${ex}`);
         }
     }
 
