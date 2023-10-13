@@ -62,7 +62,8 @@ export class ReportPoller {
     private async getAbuseReports() {
         let response_: {
             event_reports: { room_id: string, event_id: string, sender: string, reason: string }[],
-            next_token: number | undefined
+            next_token: number | undefined,
+            total: number
         } | undefined;
         try {
             response_ = await this.mjolnir.client.doRequest(
@@ -110,7 +111,7 @@ export class ReportPoller {
          * save it in account data
          */
         if (response.next_token !== undefined) {
-            this.from = response.next_token;
+            this.from = response.next_token || response.total;
         } else {
             this.from = response.total;
         }
