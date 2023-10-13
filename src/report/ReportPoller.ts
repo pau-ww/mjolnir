@@ -116,6 +116,8 @@ export class ReportPoller {
         }
 
         try {
+            console.log('====response====', response)
+            console.log('====this.from====', this.from)
             await this.mjolnir.client.setAccountData(REPORT_POLL_EVENT_TYPE, { from: this.from });
         } catch (ex) {
             await this.mjolnir.managementRoomOutput.logMessage(LogLevel.ERROR, "getAbuseReports", `failed to update progress: ${ex}`);
