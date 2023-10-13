@@ -112,12 +112,10 @@ export class ReportPoller {
         if (response.next_token !== undefined) {
             this.from = response.next_token;
         } else {
-            this.from = response.event_reports.length;
+            this.from = response.total;
         }
 
         try {
-            console.log('====response====', response)
-            console.log('====this.from====', this.from)
             await this.mjolnir.client.setAccountData(REPORT_POLL_EVENT_TYPE, { from: this.from });
         } catch (ex) {
             await this.mjolnir.managementRoomOutput.logMessage(LogLevel.ERROR, "getAbuseReports", `failed to update progress: ${ex}`);
