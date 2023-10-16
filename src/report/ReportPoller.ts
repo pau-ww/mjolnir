@@ -61,7 +61,13 @@ export class ReportPoller {
 
     private async getAbuseReports() {
         let response_: {
-            event_reports: { room_id: string, event_id: string, sender: string, reason: string }[],
+            event_reports: { 
+                room_id: string,
+                event_id: string,
+                sender: string,
+                user_id: string,
+                reason: string
+            }[],
             next_token: number | undefined,
             total: number
         } | undefined;
@@ -99,7 +105,7 @@ export class ReportPoller {
 
             await this.manager.handleServerAbuseReport({
                 roomId: report.room_id,
-                reporterId: report.sender,
+                reporterId: report.user_id,
                 event: event,
                 reason: report.reason,
             });
